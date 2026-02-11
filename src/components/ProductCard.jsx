@@ -1,11 +1,12 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { RatingStars } from './RatingStars'
 import { Badge } from './Badge'
 import { useCart } from '../context/CartContext'
 
 export const ProductCard = ({ product }) => {
   const { addToCart } = useCart()
+  const navigate = useNavigate()
 
   const discount =
     product.oldPrice && product.oldPrice > product.price
@@ -38,8 +39,8 @@ export const ProductCard = ({ product }) => {
           </h3>
         </div>
         <RatingStars rating={product.rating} />
-        <div className="mt-auto flex items-center justify-between">
-          <div className="flex items-baseline gap-1">
+        <div className="mt-auto flex flex-col gap-2">
+          <div className="flex items-baseline justify-between gap-1">
             <span className="text-base font-semibold text-slate-900">
               ${product.price}
             </span>
@@ -49,13 +50,25 @@ export const ProductCard = ({ product }) => {
               </span>
             )}
           </div>
-          <button
-            type="button"
-            onClick={() => addToCart(product, 1)}
-            className="inline-flex items-center rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-700"
-          >
-            Add to cart
-          </button>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <button
+              type="button"
+              onClick={() => addToCart(product, 1)}
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-700"
+            >
+              Add to cart
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                addToCart(product, 1)
+                navigate('/cart')
+              }}
+              className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-900 shadow-sm hover:border-primary hover:text-primary"
+            >
+              Buy now
+            </button>
+          </div>
         </div>
       </div>
     </div>

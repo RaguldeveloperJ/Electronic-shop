@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { products } from '../data/products'
 import { ImageGallery } from '../components/ImageGallery'
 import { RatingStars } from '../components/RatingStars'
@@ -11,6 +11,7 @@ export const ProductDetailPage = () => {
   const product = products.find((p) => p.id === id)
   const { addToCart } = useCart()
   const [quantity, setQuantity] = useState(1)
+  const navigate = useNavigate()
 
   if (!product) {
     return (
@@ -22,6 +23,11 @@ export const ProductDetailPage = () => {
 
   const handleAdd = () => {
     addToCart(product, quantity)
+  }
+
+  const handleBuyNow = () => {
+    addToCart(product, quantity)
+    navigate('/cart')
   }
 
   return (
@@ -63,7 +69,7 @@ export const ProductDetailPage = () => {
 
           <p className="text-sm text-slate-600">{product.description}</p>
 
-          <div className="flex items-center gap-3 pt-2">
+          <div className="flex flex-wrap items-center gap-3 pt-2">
             <div className="flex items-center rounded-lg border border-slate-200 bg-white">
               <button
                 type="button"
@@ -90,13 +96,22 @@ export const ProductDetailPage = () => {
               </button>
             </div>
 
-            <button
-              type="button"
-              onClick={handleAdd}
-              className="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
-            >
-              Add to cart
-            </button>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={handleAdd}
+                className="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
+              >
+                Add to cart
+              </button>
+              <button
+                type="button"
+                onClick={handleBuyNow}
+                className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-sm hover:border-primary hover:text-primary"
+              >
+                Buy now
+              </button>
+            </div>
           </div>
         </div>
       </div>
